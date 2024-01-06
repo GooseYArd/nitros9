@@ -89,14 +89,14 @@ $(NOSLIB)/net.o:
 bootfile: sysgo autoex $(BOOTFILE) $(DEPENDS)
 	$(MERGE) $(BOOTFILE)>$@
 
-booter_ram: bootfile
+booter_ram: bootfile trampoline
 	$(MERGE) $(BOOTFILE)>bootfile
 	$(PADROM) 31744 bootfile
 	$(AS) -DFLASH=0 --output=raw trampoline.asm -otrampoline
 	cat bootfile trampoline > $@
 	$(RM) trampoline
 
-booter_flash: bootfile
+booter_flash: bootfile trampoline
 	$(MERGE) $(BOOTFILE)>bootfile
 	$(PADROM) 31744 bootfile
 	$(AS) -DFLASH=1 --output=raw trampoline.asm -otrampoline
